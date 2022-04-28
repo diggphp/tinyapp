@@ -6,6 +6,8 @@ namespace DiggPHP\TinyApp;
 
 use DiggPHP\Psr3\LocalLogger;
 use DiggPHP\Psr11\Container;
+use DiggPHP\Psr14\EventDispatcher;
+use DiggPHP\Psr14\ListenerProvider;
 use DiggPHP\Psr15\RequestHandler;
 use DiggPHP\Psr16\LocalAdapter;
 use DiggPHP\Psr17\Factory;
@@ -14,6 +16,8 @@ use DiggPHP\Router\Collector;
 use DiggPHP\Router\Route;
 use DiggPHP\Router\Router;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -61,6 +65,8 @@ class TinyApp
             RequestFactoryInterface::class => Factory::class,
             StreamFactoryInterface::class => Factory::class,
             UploadedFileFactoryInterface::class => Factory::class,
+            EventDispatcherInterface::class => EventDispatcher::class,
+            ListenerProviderInterface::class => ListenerProvider::class,
         ], $alias) as $key => $obj) {
             self::getContainer()->set($key, is_string($obj) ? function () use ($obj) {
                 return self::getContainer()->get($obj);
